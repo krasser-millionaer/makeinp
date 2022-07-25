@@ -46,6 +46,7 @@ class InputBlock:
             if check_keyword(a, keywords)[1] == 0:
                 self.block.append(f"\t{a} {self.args[i + 2]}\n")
                 next(enum)
+
             elif check_keyword(a, keywords)[1] == 1:
                 counter = 1
                 while counter > 0:
@@ -65,12 +66,7 @@ class InputBlock:
                         counter += 1
                 self.block.append("\t\tend\n")
 
-            elif check_keyword(a, keywords)[1] == 2:
-                if "\"" in self.args[i + 2] or "\'" in self.args[i + 2]:
-                    self.args[i + 2] = self.args[i + 2].strip("\'\"")
-                self.block.append(f"\t{a} \"{self.args[i + 2]}\"\n")
-                next(enum)
-            elif check_keyword(a, keywords)[1] == 2:
+            elif check_keyword(a, keywords)[1] == 3:
                 print("Sorry! This keyword is not supported yet :(")
 
         self.block.append("\tend\n")
