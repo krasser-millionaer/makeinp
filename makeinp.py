@@ -62,12 +62,12 @@ class Reader:
         file_footer = filedata[-1:-10:-1]
         ortn = re.compile("ORCA TERMINATED NORMALLY")
 
-        for ff in file_footer:
-            if re.search(ortn, ff):
-                break
-            elif not re.search(ortn, ff) and not ff == file_footer[-1]:
-                print(f"Warning! The calculation in the file {self.filename}{self.intial_extention} did not end properly!")
-                exit(1)
+        # for ff in file_footer:
+        #     if re.search(ortn, ff):
+        #         break
+        #     elif not re.search(ortn, ff) and not ff == file_footer[-1]:
+        #         print(f"Warning! The calculation in the file {self.filename}{self.intial_extention} did not end properly!")
+        #         exit(1)
 
         geom_pattern_start = re.compile("CARTESIAN COORDINATES \(ANGSTROEM\)")
         geom_pattern_stop = re.compile("CARTESIAN COORDINATES \(A\.U\.\)")
@@ -82,7 +82,7 @@ class Reader:
         zipped = list(zip(angs_coords_list, au_coords_list))
 
         self.atoms = filedata[zipped[-1][0]+2:zipped[-1][1]-2:]
-        self.nats = zipped[-1][0] - zipped[-1][1] - 4
+        self.nats = len(self.atoms)
         self.molname = self.filename
         self.struc_list.append(
             {"nats": self.nats,
@@ -123,7 +123,7 @@ class Writer(Reader):
 
 def main():
     parser = ArgumentParser()
-    parser.add_argument("--ctrlstr", dest="CRTLSTR", help="Control string of your job",required=True)
+    parser.add_argument("--ctrlstr", dest="CRTLSTR", help="Control string of your job")
     parser.add_argument("--mem", dest="MEM", help="Memory in MB per core", default=4000)
     parser.add_argument("--nprocs", dest="NPROCS", help="Number of cores", default=24)
     parser.add_argument("--chrg", dest="CHRG", default=0, type=int, help="Charge of the molecule")
